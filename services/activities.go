@@ -90,22 +90,24 @@ func (a *ActivityServices) Create() (models.Activity, error) {
 		return activity, err7.Error
 	}
 
-	alert := models.Alert{
-		ActivityID:    activity.ID,
-		Name:          "#" + strconv.Itoa(int(activity.ID)) + " - Suspicious High Transaction Amount Detected",
-		Description:   "High and not usual transaction amount detected",
-		AlertStatusID: 1,
-	}
-
-	err6 := a.DB.Create(&alert)
-	if err6.Error != nil {
-		a.C.Logger().Error(err6.Error)
-		return activity, err6.Error
-	}
-
-	webhookURL := "https://discord.com/api/webhooks/1283797408630706309/PaqHqIra0bOJO_2MlXWFpEl5kkcmqbt-yJJBGUE9kbwdia5sA43G_0ixU0cJ8GBibtE5"
-	if err := apis.SendNotification(webhookURL, alert); err != nil {
-		a.C.Logger().Error("Failed to send notification to Discord: " + err.Error())
+	if activity.Flag {
+		alert := models.Alert{
+			ActivityID:    activity.ID,
+			Name:          "#" + strconv.Itoa(int(activity.ID)) + " - Suspicious High Transaction Amount Detected",
+			Description:   "High and not usual transaction amount detected",
+			AlertStatusID: 1,
+		}
+	
+		err6 := a.DB.Create(&alert)
+		if err6.Error != nil {
+			a.C.Logger().Error(err6.Error)
+			return activity, err6.Error
+		}
+	
+		webhookURL := "https://discord.com/api/webhooks/1283797408630706309/PaqHqIra0bOJO_2MlXWFpEl5kkcmqbt-yJJBGUE9kbwdia5sA43G_0ixU0cJ8GBibtE5"
+		if err := apis.SendNotification(webhookURL, alert); err != nil {
+			a.C.Logger().Error("Failed to send notification to Discord: " + err.Error())
+		}
 	}
 
 	return activity, nil
