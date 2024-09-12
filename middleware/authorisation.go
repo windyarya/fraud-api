@@ -3,7 +3,6 @@ package middleware
 import (
 	"bitbucket.org/windyarya/backend-final/utils/token"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -74,26 +73,6 @@ func (m *Middleware) RoleBased(next echo.HandlerFunc, requiredRole uint) echo.Ha
 			return c.JSON(http.StatusForbidden, response)
 		}
 
-		id := c.Param("id")
-		if id != "" {
-			access := m.AccessControl(id, c);
-			// fmt.Println(access)
-			if !access {
-				response := map[string]interface{}{
-					"message": "You don't have permission to access this resource",
-				}
-				return c.JSON(http.StatusForbidden, response)
-			}
-		}
-
 		return next(c)
 	}
-}
-
-func (m *Middleware) AccessControl(id string, c echo.Context) bool {
-	userID := c.Get("userID").(uint)
-	strID := strconv.Itoa(int(userID))
-	// fmt.Println(strID, id)
-
-	return strID == id
 }
