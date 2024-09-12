@@ -77,13 +77,21 @@ func (a *AccountServices) Create() (models.AccountRequest, error) {
 		}	
 	}
 
+	err5 := a.DB.First(&identityCheck, "nik = ?", identity.NIK)
+	if err5.Error != nil {
+		a.C.Logger().Error(err5.Error)
+		return request, err5.Error
+	}
+	identity.ID = identityCheck.ID
+
 	account := models.Account{
         Number:            request.Number,
         Balance:           request.Balance,
         Currency:          request.Currency,
+		AverageTrx:        request.AverageTrx,
         AccountStatusID:   request.AccountStatusID,
         WorkUnitID:        request.WorkUnitID,
-        AccountIdentityID: request.AccountIdentityID,
+        AccountIdentityID: identityCheck.ID,
     }
 
 	err3 := a.DB.Create(&account)
