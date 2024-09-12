@@ -69,9 +69,6 @@ func (m *Middleware) RoleBased(next echo.HandlerFunc, requiredRole uint) echo.Ha
 		if role > requiredRole {
 			response := map[string]interface{}{
 				"message": "You don't have permission to access this resource",
-				"data": role,
-				"required": requiredRole,
-				"res": role > requiredRole,
 			}
 			return c.JSON(http.StatusForbidden, response)
 		}
