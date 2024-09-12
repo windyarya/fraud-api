@@ -91,7 +91,7 @@ func (a *AccountServices) Create() (models.AccountRequest, error) {
 		AverageTrx:        request.AverageTrx,
         AccountStatusID:   request.AccountStatusID,
         WorkUnitID:        request.WorkUnitID,
-        AccountIdentityID: identityCheck.ID,
+        AccountIdentityID: request.AccountIdentityID,
     }
 
 	err3 := a.DB.Create(&account)

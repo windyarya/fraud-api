@@ -74,17 +74,17 @@ func (m *Middleware) RoleBased(next echo.HandlerFunc, requiredRole uint) echo.Ha
 			return c.JSON(http.StatusForbidden, response)
 		}
 
-		id := c.Param("id")
-		if id != "" {
-			access := m.AccessControl(id, c);
-			// fmt.Println(access)
-			if !access {
-				response := map[string]interface{}{
-					"message": "You don't have permission to access this resource",
-				}
-				return c.JSON(http.StatusForbidden, response)
-			}
-		}
+		// id := c.Param("id")
+		// if id != "" {
+		// 	access := m.AccessControl(id, c);
+		// 	// fmt.Println(access)
+		// 	if !access {
+		// 		response := map[string]interface{}{
+		// 			"message": "You don't have permission to access this resource",
+		// 		}
+		// 		return c.JSON(http.StatusForbidden, response)
+		// 	}
+		// }
 
 		return next(c)
 	}
