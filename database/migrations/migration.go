@@ -11,6 +11,9 @@ func Migration(db *gorm.DB) {
 		&models.User{}, 
 		&models.UserGroup{},
 		&models.WorkUnit{},
+		&models.Account{},
+		&models.AccountIdentity{},
+		&models.AccountStatus{},
 	)
 
 	if err != nil {
