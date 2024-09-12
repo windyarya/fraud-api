@@ -3,7 +3,6 @@ package middleware
 import (
 	"bitbucket.org/windyarya/backend-final/utils/token"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -90,10 +89,10 @@ func (m *Middleware) RoleBased(next echo.HandlerFunc, requiredRole uint) echo.Ha
 	}
 }
 
-func (m *Middleware) AccessControl(id string, c echo.Context) bool {
-	userID := c.Get("userID").(uint)
-	strID := strconv.Itoa(int(userID))
-	// fmt.Println(strID, id)
+// func (m *Middleware) AccessControl(id string, c echo.Context) bool {
+// 	userID := c.Get("userID").(uint)
+// 	strID := strconv.Itoa(int(userID))
+// 	// fmt.Println(strID, id)
 
-	return strID == id
-}
+// 	return strID == id
+// }
