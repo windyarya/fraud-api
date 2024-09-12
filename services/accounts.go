@@ -122,6 +122,7 @@ func (a *AccountServices) Update() (models.Account, error) {
 		Number:            request.Number,
 		Balance:           request.Balance,
 		Currency:          request.Currency,
+		AverageTrx:        request.AverageTrx,
 		AccountStatusID:   request.AccountStatusID,
 		WorkUnitID:        request.WorkUnitID,
 		AccountIdentityID: request.AccountIdentityID,

@@ -1,15 +1,22 @@
 package apis
 
 import (
-	"bitbucket.org/windyarya/backend-final/models"
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+
+	"bitbucket.org/windyarya/backend-final/models"
 )
 
 type DiscordWebhookPayload struct {
 	Content string `json:"content"`
+}
+
+type loggingTransport struct {
+    Transport http.RoundTripper
 }
 
 func SendNotification(webhookURL string, alert models.Alert) error {
@@ -31,7 +38,13 @@ func SendNotification(webhookURL string, alert models.Alert) error {
 
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
+	client := &http.Client{
+        Transport: &loggingTransport{
+            Transport: &http.Transport{
+                TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+            },
+        },
+    }
 	resp, err := client.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to send request: %v", err)
@@ -44,4 +57,19 @@ func SendNotification(webhookURL string, alert models.Alert) error {
 	}
 
 	return nil
+}
+
+func (t *loggingTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+    log.Printf("Request: %s %s", req.Method, req.URL)
+    for name, values := range req.Header {
+        for _, value := range values {
+            log.Printf("Header: %s: %s", name, value)
+        }
+    }
+    resp, err := t.Transport.RoundTrip(req)
+    if err != nil {
+        return nil, err
+    }
+    log.Printf("Response status: %s", resp.Status)
+    return resp, nil
 }
