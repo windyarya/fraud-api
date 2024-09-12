@@ -12,6 +12,7 @@ func Router(e *echo.Echo, db *gorm.DB) {
 	unit := controllers.UnitHandler{DB: db}
 	group := controllers.GroupHandler{DB: db}
 	account := controllers.AccountHandler{DB: db}
+	activity := controllers.ActivityHandler{DB: db}
 
 	// config := echojwt.Config{
 	// 	NewClaimsFunc: func(c echo.Context) jwt.Claims {
@@ -27,6 +28,7 @@ func Router(e *echo.Echo, db *gorm.DB) {
 	UnitRoutes(e, unit, mw)
 	GroupRoutes(e, group, mw)
 	AccountRoutes(e, account, mw)
+	ActivityRoutes(e, activity, mw)
 }
 
 func UserRoutes(e *echo.Echo, user controllers.UserHandler, mw middleware.Middleware) {
@@ -77,4 +79,12 @@ func AccountRoutes(e *echo.Echo, account controllers.AccountHandler, mw middlewa
 	u.POST("/accounts", mw.Authorisation(mw.RoleBased(account.Create, uint(3))))
 	u.PUT("/accounts/:id", mw.Authorisation(mw.RoleBased(account.Update, uint(3))))
 	u.DELETE("/accounts/:id", mw.Authorisation(mw.RoleBased(account.Delete, uint(3))))
+}
+
+func ActivityRoutes(e *echo.Echo, activity controllers.ActivityHandler, mw middleware.Middleware) {
+	u := e.Group("/api/v1")
+
+	u.GET("/activities", mw.Authorisation(mw.RoleBased(activity.GetAll, uint(6))))
+	u.GET("/activities/:id", mw.Authorisation(mw.RoleBased(activity.GetByID, uint(6))))
+	u.POST("/activities", mw.Authorisation(mw.RoleBased(activity.Create, uint(6))))
 }
