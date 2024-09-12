@@ -30,4 +30,4 @@ pipelines:
                   docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                   docker pull ${DOCKER_USERNAME}/fraud-monitoring:latest
                   docker rm -f fraud-monitoring || true
-                  docker run -d -e TOKEN_SALT=${TOKEN_SALT} DB_USER=${DB_USER} DB_PASSWORD=${DB_PASSWORD} DB_HOST=${DB_HOST} DB_PORT=${DB_PORT} DB_NAME=${DB_NAME} --name=fraud-monitoring -p 8080:8080 ${DOCKER_USERNAME}/fraud-monitoring:latest
+                  docker run -d -e TOKEN_SALT=${TOKEN_SALT} -e DB_USER=${DB_USER} -e DB_PASSWORD=${DB_PASSWORD} -e DB_HOST=${DB_HOST} -e DB_PORT=${DB_PORT} -e DB_NAME=${DB_NAME} --name=fraud-monitoring -p 8080:8080 ${DOCKER_USERNAME}/fraud-monitoring:latest
