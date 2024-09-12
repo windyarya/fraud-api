@@ -35,6 +35,7 @@ type AccountRequest struct {
     Password  string `json:"password"`
     NIK       string `json:"nik"`
 	Number              string           `json:"number"`
+    AverageTrx          string           `json:"average_trx"`
     Balance             string    	     `json:"balance"`
     Currency            string           `json:"currency"`
     AccountStatusID     uint             `json:"status_id"`
