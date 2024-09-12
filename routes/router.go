@@ -13,6 +13,7 @@ func Router(e *echo.Echo, db *gorm.DB) {
 	group := controllers.GroupHandler{DB: db}
 	account := controllers.AccountHandler{DB: db}
 	activity := controllers.ActivityHandler{DB: db}
+	alert := controllers.AlertHandler{DB: db}
 
 	// config := echojwt.Config{
 	// 	NewClaimsFunc: func(c echo.Context) jwt.Claims {
@@ -29,6 +30,7 @@ func Router(e *echo.Echo, db *gorm.DB) {
 	GroupRoutes(e, group, mw)
 	AccountRoutes(e, account, mw)
 	ActivityRoutes(e, activity, mw)
+	AlertRoutes(e, alert, mw)
 }
 
 func UserRoutes(e *echo.Echo, user controllers.UserHandler, mw middleware.Middleware) {
@@ -87,4 +89,14 @@ func ActivityRoutes(e *echo.Echo, activity controllers.ActivityHandler, mw middl
 	u.GET("/activities", mw.Authorisation(mw.RoleBased(activity.GetAll, uint(6))))
 	u.GET("/activities/:id", mw.Authorisation(mw.RoleBased(activity.GetByID, uint(6))))
 	u.POST("/activities", mw.Authorisation(mw.RoleBased(activity.Create, uint(6))))
+}
+
+func AlertRoutes(e *echo.Echo, alert controllers.AlertHandler, mw middleware.Middleware) {
+	u := e.Group("/api/v1")
+
+	u.GET("/alerts", mw.Authorisation(mw.RoleBased(alert.GetAll, uint(6))))
+	u.GET("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.GetByID, uint(6))))
+	u.POST("/alerts", mw.Authorisation(mw.RoleBased(alert.Create, uint(6))))
+	u.PUT("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Update, uint(5))))
+	u.DELETE("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Delete, uint(4))))
 }
