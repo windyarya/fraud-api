@@ -49,7 +49,6 @@ func (m *Middleware) Authorisation(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set("role", claims.UserGroupID)
-		c.Set("userID", claims.ID)
 
 		return next(c)
 	}
@@ -65,7 +64,7 @@ func (m *Middleware) RoleBased(next echo.HandlerFunc, requiredRole uint) echo.Ha
 		// 	3: "Analyst",
 		// 	4: "User",
 		// }
-
+		println(role > requiredRole)
 		if role > requiredRole {
 			response := map[string]interface{}{
 				"message": "You don't have permission to access this resource",
