@@ -38,10 +38,10 @@ func UserRoutes(e *echo.Echo, user controllers.UserHandler, mw middleware.Middle
 
 	// u.Use(echojwt.WithConfig(config))
 
-	u.GET("/users", mw.Authorisation(mw.RoleBased(user.GetUsers, uint(3))))
-	u.GET("/users/:id", mw.Authorisation(mw.RoleBased(user.GetUser, uint(6))))
-	u.PUT("/users/:id", mw.Authorisation(mw.RoleBased(user.Update, uint(6))))
-	u.DELETE("/users/:id", mw.Authorisation(mw.RoleBased(user.Delete, uint(3))))
+	u.GET("/users", mw.Authorisation(mw.RoleBased(user.GetUsers, uint(1))))
+	u.GET("/users/:id", mw.Authorisation(mw.RoleBased(user.GetUser, uint(4))))
+	u.PUT("/users/:id", mw.Authorisation(mw.RoleBased(user.Update, uint(4))))
+	u.DELETE("/users/:id", mw.Authorisation(mw.RoleBased(user.Delete, uint(1))))
 	// u.POST("/logout", user.Logout)
 }
 
@@ -56,47 +56,47 @@ func UnitRoutes(e *echo.Echo, unit controllers.UnitHandler, mw middleware.Middle
 	u := e.Group("/api/v1")
 
 
-	u.GET("/units", mw.Authorisation(mw.RoleBased(unit.GetAll, uint(6))))
-	u.GET("/units/:id", mw.Authorisation(mw.RoleBased(unit.GetByID, uint(6))))
-	u.POST("/units", mw.Authorisation(mw.RoleBased(unit.Create, uint(3))))
-	u.PUT("/units/:id", mw.Authorisation(mw.RoleBased(unit.Update, uint(3))))
-	u.DELETE("/units/:id", mw.Authorisation(mw.RoleBased(unit.Delete, uint(3))))
+	u.GET("/units", mw.Authorisation(mw.RoleBased(unit.GetAll, uint(4))))
+	u.GET("/units/:id", mw.Authorisation(mw.RoleBased(unit.GetByID, uint(4))))
+	u.POST("/units", mw.Authorisation(mw.RoleBased(unit.Create, uint(1))))
+	u.PUT("/units/:id", mw.Authorisation(mw.RoleBased(unit.Update, uint(1))))
+	u.DELETE("/units/:id", mw.Authorisation(mw.RoleBased(unit.Delete, uint(1))))
 }
 
 func GroupRoutes(e *echo.Echo, group controllers.GroupHandler, mw middleware.Middleware) {
 	u := e.Group("/api/v1")
 
-	u.GET("/groups", mw.Authorisation(mw.RoleBased(group.GetAll, uint(3))))
-	u.GET("/groups/:id", mw.Authorisation(mw.RoleBased(group.GetByID, uint(6))))
-	u.POST("/groups", mw.Authorisation(mw.RoleBased(group.Create, uint(3))))
-	u.PUT("/groups/:id", mw.Authorisation(mw.RoleBased(group.Update, uint(3))))
-	u.DELETE("/groups/:id", mw.Authorisation(mw.RoleBased(group.Delete, uint(3))))
+	u.GET("/groups", mw.Authorisation(mw.RoleBased(group.GetAll, uint(1))))
+	u.GET("/groups/:id", mw.Authorisation(mw.RoleBased(group.GetByID, uint(4))))
+	u.POST("/groups", mw.Authorisation(mw.RoleBased(group.Create, uint(1))))
+	u.PUT("/groups/:id", mw.Authorisation(mw.RoleBased(group.Update, uint(1))))
+	u.DELETE("/groups/:id", mw.Authorisation(mw.RoleBased(group.Delete, uint(1))))
 }
 
 func AccountRoutes(e *echo.Echo, account controllers.AccountHandler, mw middleware.Middleware) {
 	u := e.Group("/api/v1")
 
-	u.GET("/accounts", mw.Authorisation(mw.RoleBased(account.GetAll, uint(4))))
-	u.GET("/accounts/:id", mw.Authorisation(mw.RoleBased(account.GetByID, uint(6))))
-	u.POST("/accounts", mw.Authorisation(mw.RoleBased(account.Create, uint(3))))
-	u.PUT("/accounts/:id", mw.Authorisation(mw.RoleBased(account.Update, uint(3))))
-	u.DELETE("/accounts/:id", mw.Authorisation(mw.RoleBased(account.Delete, uint(3))))
+	u.GET("/accounts", mw.Authorisation(mw.RoleBased(account.GetAll, uint(2))))
+	u.GET("/accounts/:id", mw.Authorisation(mw.RoleBased(account.GetByID, uint(4))))
+	u.POST("/accounts", mw.Authorisation(mw.RoleBased(account.Create, uint(1))))
+	u.PUT("/accounts/:id", mw.Authorisation(mw.RoleBased(account.Update, uint(1))))
+	u.DELETE("/accounts/:id", mw.Authorisation(mw.RoleBased(account.Delete, uint(1))))
 }
 
 func ActivityRoutes(e *echo.Echo, activity controllers.ActivityHandler, mw middleware.Middleware) {
 	u := e.Group("/api/v1")
 
-	u.GET("/activities", mw.Authorisation(mw.RoleBased(activity.GetAll, uint(6))))
-	u.GET("/activities/:id", mw.Authorisation(mw.RoleBased(activity.GetByID, uint(6))))
-	u.POST("/activities", mw.Authorisation(mw.RoleBased(activity.Create, uint(6))))
+	u.GET("/activities", mw.Authorisation(mw.RoleBased(activity.GetAll, uint(4))))
+	u.GET("/activities/:id", mw.Authorisation(mw.RoleBased(activity.GetByID, uint(4))))
+	u.POST("/activities", mw.Authorisation(mw.RoleBased(activity.Create, uint(4))))
 }
 
 func AlertRoutes(e *echo.Echo, alert controllers.AlertHandler, mw middleware.Middleware) {
 	u := e.Group("/api/v1")
 
-	u.GET("/alerts", mw.Authorisation(mw.RoleBased(alert.GetAll, uint(6))))
-	u.GET("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.GetByID, uint(6))))
-	u.POST("/alerts", mw.Authorisation(mw.RoleBased(alert.Create, uint(6))))
-	u.PUT("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Update, uint(5))))
-	u.DELETE("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Delete, uint(4))))
+	u.GET("/alerts", mw.Authorisation(mw.RoleBased(alert.GetAll, uint(4))))
+	u.GET("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.GetByID, uint(4))))
+	u.POST("/alerts", mw.Authorisation(mw.RoleBased(alert.Create, uint(4))))
+	u.PUT("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Update, uint(3))))
+	u.DELETE("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Delete, uint(2))))
 }
