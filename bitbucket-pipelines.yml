@@ -1,0 +1,33 @@
+image: atlassian/default-image:3
+
+pipelines:
+  branches:
+    development:
+      - step:
+          name: Build and Push Docker image
+          script:
+            - docker build -t ${DOCKER_USERNAME}/fraud-monitoring:latest .
+            - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+            - docker push ${DOCKER_USERNAME}/fraud-monitoring:latest
+          services:
+            - docker
+          caches:
+            - docker
+    
+    main:
+      - step:
+          name: Deploy to EC2 Instance
+          image: atlassian/default-image:latest
+          deployment: production
+          script:
+            - pipe: atlassian/ssh-run:0.4.0
+              variables:
+                SSH_USER: ${SSH_USER}
+                SERVER: ${SERVER}
+                SSH_KEY: ${SSH_KEY}
+                COMMAND: |
+                  echo "Pulling latest docker image"
+                  docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+                  docker pull ${DOCKER_USERNAME}/fraud-monitoring:latest
+                  docker rm -f fraud-monitoring || true
+                  docker run -d -e TOKEN_SALT=${TOKEN_SALT} DB_USER=${DB_USER} DB_PASSWORD=${DB_PASSWORD} DB_HOST=${DB_HOST} DB_PORT=${DB_PORT} DB_NAME=${DB_NAME} --name=fraud-monitoring -p 8080:8080 ${DOCKER_USERNAME}/fraud-monitoring:latest
