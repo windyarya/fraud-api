@@ -95,7 +95,7 @@ func AlertRoutes(e *echo.Echo, alert controllers.AlertHandler, mw middleware.Mid
 	u := e.Group("/api/v1")
 
 	u.GET("/alerts", mw.Authorisation(mw.RoleBased(alert.GetAll, uint(4))))
-	u.GET("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.GetByID, uint(4))))
+	u.GET("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.GetByID, uint(3))))
 	u.POST("/alerts", mw.Authorisation(mw.RoleBased(alert.Create, uint(4))))
 	u.PUT("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Update, uint(3))))
 	u.DELETE("/alerts/:id", mw.Authorisation(mw.RoleBased(alert.Delete, uint(2))))

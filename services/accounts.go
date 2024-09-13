@@ -15,7 +15,7 @@ type AccountServices struct {
 
 func (a *AccountServices) GetAll() ([]models.Account, error) {
 	var accounts []models.Account
-	err := a.DB.Preload("AccountIdentity").Preload("AccountStatus").Preload("WorkUnit").Find(&accounts)
+	err := a.DB.Find(&accounts)
 	if err.Error != nil {
 		return accounts, err.Error
 	}
@@ -31,7 +31,7 @@ func (a *AccountServices) GetByID() (models.Account, error) {
 		return account, err
 	}
 	
-	err2 := a.DB.Preload("AccountIdentity").Preload("AccountStatus").Preload("WorkUnit").Find(&account, ids)
+	err2 := a.DB.Find(&account, ids)
 	if err2.Error != nil {
 		a.C.Logger().Error(err2.Error)
 		return account, err2.Error
